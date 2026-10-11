@@ -2,8 +2,9 @@
 
 **Project Title:** AeroAI: Machine Learning-Based Multi-Pollutant Air Quality Index (AQI) Prediction and Atmospheric Risk Modeling for Indian Megacities  
 **Evaluation Window:** 08/10/2026 to 12/10/2026  
-**Implementation / Demonstration URL:** [http://localhost:8000](http://localhost:8000)  
-**Interactive API Documentation:** [http://localhost:8000/docs](http://localhost:8000/docs)  
+**Public Live Link (Accessible by anyone, anywhere):** [https://babies-quit-rogers-sites.trycloudflare.com](https://babies-quit-rogers-sites.trycloudflare.com)  
+**Local Demonstration Link:** [http://localhost:8000](http://localhost:8000)  
+**Interactive API Documentation:** [https://babies-quit-rogers-sites.trycloudflare.com/docs](https://babies-quit-rogers-sites.trycloudflare.com/docs)  
 **Submission Google Form:** [Google Form Link](https://docs.google.com/forms/d/e/1FAIpQLScJQ-8sw7889SSnuVRNjNiZe3cKDujelKanh93g6JkFoArdQA/viewform?usp=publish-editor)  
 
 ---
