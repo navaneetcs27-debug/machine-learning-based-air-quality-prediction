@@ -690,9 +690,11 @@ async function loadDiurnalData() {
 function setupEvaluationModal() {
   const modal = document.getElementById('phase2Modal');
   const openBtn = document.getElementById('openPhase2ModalBtn');
+  const openAltBtn = document.getElementById('openModalAltBtn');
   const closeBtn = document.getElementById('closePhase2ModalBtn');
 
   if (openBtn && modal) openBtn.addEventListener('click', () => modal.classList.add('active'));
+  if (openAltBtn && modal) openAltBtn.addEventListener('click', () => modal.classList.add('active'));
   if (closeBtn && modal) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
   if (modal) {
     modal.addEventListener('click', (e) => {

@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AeroAI: Machine Learning-Based Multi-Pollutant Air Quality Index (AQI) Prediction and Atmospheric Risk Modeling for Indian Megacities and New Delhi CAAQM Network under CPCB Standards.">
-  <meta name="keywords" content="CPCB, NAQI, New Delhi Air Quality, Machine Learning, AQI Prediction, PM2.5, PM10, Stubble Burning, GRAP, Phase 2 Project Evaluation">
-  <meta name="author" content="Department of Computer Science & Engineering - Capstone Team">
-  <title>AeroAI | CPCB Air Quality ML Engine (New Delhi & Indian Metros) - Phase 2</title>
+  <meta name="description" content="Machine Learning Based Air Quality Index (AQI) Prediction System for Indian Megacities under CPCB NAQI Standards. B.Tech Capstone Project Phase-II Implementation.">
+  <title>Air Quality Index (AQI) Prediction System using ML | Phase-2 Project Evaluation</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Font: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -21,365 +19,335 @@
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Phase 2 Academic Evaluation Banner -->
-    <div class="eval-banner">
-      <div class="eval-banner-text">
-        <span class="eval-badge">🎓 Phase 2 Evaluation</span>
-        <span><strong>Capstone Project Progress (08/10/2026 – 12/10/2026)</strong> — Guide Demonstration & CPCB Telemetry Verification Active</span>
-      </div>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="eval-banner-btn" id="openPhase2ModalBtn">
-          <span>📋 View Progress Report & Form Answers</span>
-        </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScJQ-8sw7889SSnuVRNjNiZe3cKDujelKanh93g6JkFoArdQA/viewform" target="_blank" rel="noopener noreferrer" class="eval-banner-btn" style="background: rgba(255, 153, 51, 0.25); border-color: rgba(255, 153, 51, 0.5); text-decoration: none;">
-          <span>📝 Open College Form</span>
-        </a>
-      </div>
+  <!-- Top Academic Navigation Bar -->
+  <div class="project-topbar">
+    <div class="project-topbar-left">
+      <span class="phase-pill">PHASE-II REVIEW</span>
+      <span>B.Tech Project Evaluation (08/10/2026 – 12/10/2026)</span>
+      <span style="color: #94a3b8;">|</span>
+      <span>Standard: CPCB NAQI (India)</span>
     </div>
+    <div class="project-topbar-right">
+      <span id="currentTimeDisplay">--:--:-- IST</span>
+      <span style="color: #94a3b8;">|</span>
+      <a class="topbar-link" id="openPhase2ModalBtn">📋 View Progress Report</a>
+    </div>
+  </div>
 
-    <!-- Header / Navbar -->
-    <header class="header">
-      <div class="brand">
-        <div class="brand-icon">🇮🇳</div>
-        <div>
-          <h1 class="brand-title">AeroAI Engine</h1>
-          <div class="brand-subtitle">CPCB NAQI Multi-Model Machine Learning Engine | New Delhi & Indian Megacities</div>
+  <div class="container">
+
+    <!-- Project Title Header -->
+    <header class="main-header">
+      <div class="header-left">
+        <div class="header-logo">AQ</div>
+        <div class="header-title-group">
+          <h1>Machine Learning Based Air Quality Prediction System</h1>
+          <div class="header-subtitle">Continuous Ambient Monitoring Telemetry & CPCB Sub-Index Engine | Focus: New Delhi NCR</div>
         </div>
       </div>
-      <div class="nav-badges">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span>CPCB NAQI Standard (R² > 0.999)</span>
+      <div class="header-right">
+        <div class="status-badge">
+          <span class="status-indicator"></span>
+          <span>Models Loaded (Test R²: 0.999)</span>
         </div>
-        <div class="time-pill" id="currentTimeDisplay">--:--:-- IST</div>
+        <button class="eval-doc-btn" id="openModalAltBtn">
+          <span>Project Progress Doc</span>
+        </button>
       </div>
     </header>
 
-    <!-- INDIAN CITY & DELHI CAAQM STATION SELECTOR -->
-    <section class="city-selector-card">
-      <div class="city-selector-header">
-        <div class="city-selector-title">
-          <span>🏛️ Indian CAAQM Monitoring Station Network</span>
-          <span class="delhi-highlight-pill">Focus: New Delhi NCR</span>
+    <!-- SECTION 1: Monitoring Station Registry -->
+    <section class="station-selector-panel">
+      <div class="station-selector-header">
+        <div class="section-label">
+          <span>📍 Select Monitoring Station (CAAQM Telemetry)</span>
         </div>
-        <div class="city-tabs">
-          <button class="city-tab-btn active" id="tabFilterDelhi">📍 New Delhi Stations</button>
-          <button class="city-tab-btn" id="tabFilterAll">🏙️ Major Indian Metros</button>
+        <div class="filter-tabs">
+          <button class="filter-tab-btn active" id="tabFilterDelhi">New Delhi Stations</button>
+          <button class="filter-tab-btn" id="tabFilterAll">Other Indian Metros</button>
         </div>
       </div>
-
-      <!-- Station Buttons (Loaded via app.js) -->
       <div class="station-grid" id="stationsContainer">
-        <!-- Injected via JavaScript from /api/indian-cities -->
+        <!-- Injected dynamically via app.js -->
       </div>
     </section>
 
-    <!-- Quick Scenario Presets -->
-    <section class="presets-section">
-      <div class="presets-header">
-        <span class="presets-title">⚡ Indian Seasonal Archetypes</span>
-        <span class="input-desc">Simulate authentic atmospheric events across the Indo-Gangetic & Coastal basins</span>
+    <!-- SECTION 2: Seasonal Scenario Archetypes -->
+    <section class="presets-strip">
+      <div class="section-label" style="font-size: 12px; margin-bottom: 4px;">
+        <span>⛅ Quick Environmental Scenarios (Indian Subcontinent)</span>
       </div>
       <div class="presets-grid" id="presetsContainer">
-        <!-- Injected via JavaScript from /api/presets -->
+        <!-- Injected dynamically via app.js -->
       </div>
     </section>
 
-    <!-- Main Interactive Grid -->
+    <!-- MAIN INTERACTIVE SECTION -->
     <main class="main-grid">
 
-      <!-- LEFT COLUMN: Input Parameters & Controls -->
-      <section class="card" id="inputParametersCard">
-        <div class="card-header">
+      <!-- LEFT COLUMN: Parameter Inputs Form -->
+      <section class="academic-card">
+        <div class="card-header-bar">
           <div>
-            <h2 class="card-title">🔬 Atmospheric Sensors</h2>
-            <div class="card-subtitle">Real-time parameters calibrated for CPCB Continuous Ambient Stations</div>
+            <div class="card-heading">Atmospheric & Weather Input Parameters</div>
+            <div class="card-subtext">Calibrated to physical CPCB ambient monitoring sensors</div>
           </div>
         </div>
 
-        <!-- Model Selection Dropdown -->
-        <div class="model-select-wrapper">
-          <div class="input-label">
+        <!-- Model Selection -->
+        <div class="form-group">
+          <div class="form-label">
             <span>Machine Learning Algorithm</span>
-            <span class="input-desc">Comparative evaluation models</span>
+            <span style="color: var(--text-muted); font-weight: normal;">Select model for prediction</span>
           </div>
-          <select class="styled-select" id="modelSelector">
-            <option value="random_forest" selected>Random Forest Regressor (R² = 0.9995 | MAE = 1.50)</option>
-            <option value="gradient_boosting">Gradient Boosting Regressor (R² = 0.9996 | MAE = 1.78)</option>
-            <option value="decision_tree">Decision Tree Regressor (R² = 0.9995 | MAE = 1.76)</option>
-            <option value="linear_regression">Linear Regression Baseline (R² = 0.9767 | MAE = 18.69)</option>
-            <option value="ensemble">Ensemble Hybrid (RF + Gradient Boost Average)</option>
+          <select class="form-select" id="modelSelector">
+            <option value="random_forest" selected>Random Forest Regressor (Test R² = 0.9995 | MAE = 1.50)</option>
+            <option value="gradient_boosting">Gradient Boosting Regressor (Test R² = 0.9996 | MAE = 1.78)</option>
+            <option value="decision_tree">Decision Tree Regressor (Test R² = 0.9995 | MAE = 1.76)</option>
+            <option value="linear_regression">Linear Regression Baseline (Test R² = 0.9767 | MAE = 18.69)</option>
+            <option value="ensemble">Ensemble Average (RF + Gradient Boosting)</option>
           </select>
         </div>
 
-        <!-- Category: Particulate Matter -->
-        <div class="inputs-category-title">
-          <span>🌫️ Particulate Matter (CPCB Standard, µg/m³)</span>
-        </div>
+        <!-- Particulates -->
+        <div class="category-header">1. Particulate Matter (Aerosols)</div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">PM2.5 <span class="param-unit">(Fine Respirable Particulates, µg/m³)</span></span>
-            <input type="number" id="input_pm25" class="param-input-box" min="1" max="500" step="0.5" value="215.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">PM2.5 <span class="input-unit">(Fine Particulates, µg/m³)</span></span>
+            <input type="number" id="input_pm25" class="input-num-box" min="1" max="500" step="0.5" value="215.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">1</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">1</span>
             <input type="range" id="slider_pm25" class="styled-slider" min="1" max="500" step="0.5" value="215.0">
-            <span class="slider-limit">500</span>
+            <span class="slider-limit-label">500</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">PM10 <span class="param-unit">(Coarse Dust & Stubble Ash, µg/m³)</span></span>
-            <input type="number" id="input_pm10" class="param-input-box" min="2" max="650" step="1" value="385.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">PM10 <span class="input-unit">(Coarse Dust & Ash, µg/m³)</span></span>
+            <input type="number" id="input_pm10" class="input-num-box" min="2" max="650" step="1" value="385.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">2</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">2</span>
             <input type="range" id="slider_pm10" class="styled-slider" min="2" max="650" step="1" value="385.0">
-            <span class="slider-limit">650</span>
+            <span class="slider-limit-label">650</span>
           </div>
         </div>
 
-        <!-- Category: Combustion & Smog Gases -->
-        <div class="inputs-category-title">
-          <span>🚗 Combustion Gases & Photochemical Smog</span>
-        </div>
+        <!-- Gases -->
+        <div class="category-header">2. Gaseous Pollutants</div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">NO2 <span class="param-unit">(Nitrogen Dioxide - Vehicular, µg/m³)</span></span>
-            <input type="number" id="input_no2" class="param-input-box" min="1" max="350" step="0.5" value="95.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">NO2 <span class="input-unit">(Nitrogen Dioxide - Vehicular, µg/m³)</span></span>
+            <input type="number" id="input_no2" class="input-num-box" min="1" max="350" step="0.5" value="95.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">1</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">1</span>
             <input type="range" id="slider_no2" class="styled-slider" min="1" max="350" step="0.5" value="95.0">
-            <span class="slider-limit">350</span>
+            <span class="slider-limit-label">350</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">SO2 <span class="param-unit">(Sulfur Dioxide - Industrial, µg/m³)</span></span>
-            <input type="number" id="input_so2" class="param-input-box" min="0.5" max="250" step="0.5" value="28.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">SO2 <span class="input-unit">(Sulfur Dioxide - Industrial, µg/m³)</span></span>
+            <input type="number" id="input_so2" class="input-num-box" min="0.5" max="250" step="0.5" value="28.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">0.5</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">0.5</span>
             <input type="range" id="slider_so2" class="styled-slider" min="0.5" max="250" step="0.5" value="28.0">
-            <span class="slider-limit">250</span>
+            <span class="slider-limit-label">250</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">CO <span class="param-unit">(Carbon Monoxide - Exhaust, mg/m³)</span></span>
-            <input type="number" id="input_co" class="param-input-box" min="0.1" max="20" step="0.1" value="3.8">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">CO <span class="input-unit">(Carbon Monoxide - Exhaust, mg/m³)</span></span>
+            <input type="number" id="input_co" class="input-num-box" min="0.1" max="20" step="0.1" value="3.8">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">0.1</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">0.1</span>
             <input type="range" id="slider_co" class="styled-slider" min="0.1" max="20" step="0.1" value="3.8">
-            <span class="slider-limit">20</span>
+            <span class="slider-limit-label">20</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">O3 <span class="param-unit">(Ground-level Ozone, µg/m³)</span></span>
-            <input type="number" id="input_o3" class="param-input-box" min="2" max="250" step="1" value="42.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">O3 <span class="input-unit">(Ground Ozone - Photochemical, µg/m³)</span></span>
+            <input type="number" id="input_o3" class="input-num-box" min="2" max="250" step="1" value="42.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">2</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">2</span>
             <input type="range" id="slider_o3" class="styled-slider" min="2" max="250" step="1" value="42.0">
-            <span class="slider-limit">250</span>
+            <span class="slider-limit-label">250</span>
           </div>
         </div>
 
-        <!-- Category: Indian Meteorological Factors -->
-        <div class="inputs-category-title">
-          <span>⛅ Weather & Inversion Dynamics</span>
-        </div>
+        <!-- Meteorology -->
+        <div class="category-header">3. Weather & Meteorology</div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">Ambient Temperature <span class="param-unit">(°C)</span></span>
-            <input type="number" id="input_temperature" class="param-input-box" min="2" max="50" step="0.5" value="18.5">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">Temperature <span class="input-unit">(Ambient, °C)</span></span>
+            <input type="number" id="input_temperature" class="input-num-box" min="2" max="50" step="0.5" value="18.5">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">2°C</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">2°</span>
             <input type="range" id="slider_temperature" class="styled-slider" min="2" max="50" step="0.5" value="18.5">
-            <span class="slider-limit">50°C</span>
+            <span class="slider-limit-label">50°</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">Relative Humidity <span class="param-unit">(Fog/Mist Factor, %)</span></span>
-            <input type="number" id="input_humidity" class="param-input-box" min="10" max="100" step="1" value="78.0">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">Humidity <span class="input-unit">(Relative, %)</span></span>
+            <input type="number" id="input_humidity" class="input-num-box" min="10" max="100" step="1" value="78.0">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">10%</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">10%</span>
             <input type="range" id="slider_humidity" class="styled-slider" min="10" max="100" step="1" value="78.0">
-            <span class="slider-limit">100%</span>
+            <span class="slider-limit-label">100%</span>
           </div>
         </div>
 
-        <div class="parameter-row">
-          <div class="param-header">
-            <span class="param-name">Wind Speed <span class="param-unit">(Ventilation & Dispersion, km/h)</span></span>
-            <input type="number" id="input_wind_speed" class="param-input-box" min="0.5" max="45" step="0.5" value="3.2">
+        <div class="input-row">
+          <div class="input-row-header">
+            <span class="input-label-text">Wind Speed <span class="input-unit">(Dispersion Rate, km/h)</span></span>
+            <input type="number" id="input_wind_speed" class="input-num-box" min="0.5" max="45" step="0.5" value="3.2">
           </div>
-          <div class="slider-container">
-            <span class="slider-limit">0.5</span>
+          <div class="slider-wrapper">
+            <span class="slider-limit-label">0.5</span>
             <input type="range" id="slider_wind_speed" class="styled-slider" min="0.5" max="45" step="0.5" value="3.2">
-            <span class="slider-limit">45</span>
+            <span class="slider-limit-label">45</span>
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="controls-actions">
-          <button class="btn-primary" id="runPredictBtn">
-            <span>⚡ Run CPCB ML Inference</span>
-          </button>
-          <button class="btn-secondary" id="randomizeBtn">
-            <span>🎲 Random Sensor Telemetry</span>
-          </button>
+        <div class="action-buttons-group">
+          <button class="btn-run-predict" id="runPredictBtn">Run Prediction</button>
+          <button class="btn-secondary" id="randomizeBtn">Randomize Values</button>
         </div>
-
       </section>
 
-      <!-- RIGHT COLUMN: Real-time AQI Output & Analysis -->
-      <section class="card" id="predictionDisplayCard">
-        <div class="card-header">
+      <!-- RIGHT COLUMN: Output & Results -->
+      <section class="academic-card">
+        <div class="card-header-bar">
           <div>
-            <h2 class="card-title">📊 CPCB NAQI Real-Time Output</h2>
-            <div class="card-subtitle">Official Indian National Air Quality Index & GRAP Action Alerts</div>
+            <div class="card-heading">Model Prediction & CPCB Output</div>
+            <div class="card-subtext">National Air Quality Index (NAQI) calculation as per MoEFCC</div>
           </div>
         </div>
 
-        <!-- Animated AQI Gauge -->
-        <div class="aqi-gauge-card">
-          <div class="gauge-svg-wrapper">
+        <!-- AQI Meter Box -->
+        <div class="aqi-display-box">
+          <div class="gauge-svg-container">
             <svg class="gauge-svg" viewBox="0 0 200 120">
               <path class="gauge-track" d="M 30 110 A 70 70 0 0 1 170 110" />
               <path class="gauge-fill" id="gaugeFillArc" d="M 30 110 A 70 70 0 0 1 170 110" />
             </svg>
-            <div class="gauge-center-content">
-              <div class="aqi-number" id="aqiValueNumber">--</div>
-              <div class="aqi-sublabel">Predicted NAQI (India)</div>
+            <div class="gauge-center-data">
+              <div class="aqi-big-value" id="aqiValueNumber">--</div>
+              <div class="aqi-unit-label">Calculated NAQI</div>
             </div>
           </div>
 
-          <!-- CPCB Category Badge Box -->
-          <div class="category-badge-box" id="categoryBadge">Calculating...</div>
+          <div class="category-banner" id="categoryBadge">Calculating...</div>
+          <div class="driver-pill">Governing Pollutant: <span class="driver-bold" id="dominantPollutantBadge">PM2.5</span></div>
+        </div>
 
-          <div class="dominant-pollutant-pill">
-            <span>Governing Pollutant Driver:</span>
-            <span class="dominant-bold" id="dominantPollutantBadge">PM2.5</span>
+        <!-- Multi-Model Comparison Table -->
+        <div class="models-table-box">
+          <div class="section-label" style="font-size: 11px; margin-bottom: 4px;">Model Benchmark Comparison (Current Input)</div>
+          <table class="academic-table">
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Test R²</th>
+                <th>Test MAE</th>
+                <th>Predicted AQI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="card_random_forest" class="active-row">
+                <td>Random Forest Regressor</td>
+                <td>0.9995</td>
+                <td>1.50</td>
+                <td id="val_random_forest">--</td>
+              </tr>
+              <tr id="card_gradient_boosting">
+                <td>Gradient Boosting Regressor</td>
+                <td>0.9996</td>
+                <td>1.78</td>
+                <td id="val_gradient_boosting">--</td>
+              </tr>
+              <tr id="card_decision_tree">
+                <td>Decision Tree Regressor</td>
+                <td>0.9995</td>
+                <td>1.76</td>
+                <td id="val_decision_tree">--</td>
+              </tr>
+              <tr id="card_linear_regression">
+                <td>Linear Regression (Baseline)</td>
+                <td>0.9767</td>
+                <td>18.69</td>
+                <td id="val_linear_regression">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sub-Index Breakdown -->
+        <div class="subindex-panel">
+          <div class="section-label" style="font-size: 11px; margin-bottom: 8px;">CPCB Individual Sub-Index Values</div>
+          
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>PM2.5 Sub-Index</span><span id="subval_pm25">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_pm25" style="width: 45%;"></div></div>
+          </div>
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>PM10 Sub-Index</span><span id="subval_pm10">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_pm10" style="width: 55%;"></div></div>
+          </div>
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>NO2 Sub-Index</span><span id="subval_no2">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_no2" style="width: 25%;"></div></div>
+          </div>
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>SO2 Sub-Index</span><span id="subval_so2">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_so2" style="width: 15%;"></div></div>
+          </div>
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>CO Sub-Index</span><span id="subval_co">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_co" style="width: 20%;"></div></div>
+          </div>
+          <div class="subindex-row">
+            <div class="subindex-meta"><span>O3 Sub-Index</span><span id="subval_o3">-- AQI</span></div>
+            <div class="subindex-bar-track"><div class="subindex-bar-fill" id="subbar_o3" style="width: 18%;"></div></div>
           </div>
         </div>
 
-        <!-- Multi-Model Comparison Strip -->
-        <div class="models-strip">
-          <div class="model-mini-card active-model" id="card_random_forest">
-            <div class="model-mini-name">Random Forest</div>
-            <div class="model-mini-val" id="val_random_forest">--</div>
-            <div class="model-mini-r2">R²: 0.9995</div>
-          </div>
-          <div class="model-mini-card" id="card_gradient_boosting">
-            <div class="model-mini-name">Gradient Boost</div>
-            <div class="model-mini-val" id="val_gradient_boosting">--</div>
-            <div class="model-mini-r2">R²: 0.9996</div>
-          </div>
-          <div class="model-mini-card" id="card_decision_tree">
-            <div class="model-mini-name">Decision Tree</div>
-            <div class="model-mini-val" id="val_decision_tree">--</div>
-            <div class="model-mini-r2">R²: 0.9995</div>
-          </div>
-          <div class="model-mini-card" id="card_linear_regression">
-            <div class="model-mini-name">Linear Reg.</div>
-            <div class="model-mini-val" id="val_linear_regression">--</div>
-            <div class="model-mini-r2">R²: 0.9767</div>
-          </div>
-        </div>
-
-        <!-- CPCB Sub-Indices Breakdown -->
-        <div class="breakdown-card">
-          <div class="breakdown-title">📈 CPCB Pollutant Sub-Index Breakdown (0–500 Scale)</div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>PM2.5 Sub-Index</span>
-              <span id="subval_pm25">-- AQI</span>
+        <!-- Health & GRAP Advisory -->
+        <div class="advisory-box">
+          <div class="section-label" style="font-size: 11px;">Health Advisory & Delhi GRAP Stage Protocol</div>
+          <div class="advisory-grid">
+            <div class="advisory-item">
+              <span class="advisory-item-title">Public Health Impact</span>
+              <span class="advisory-item-text" id="advisoryGeneral">Analyzing parameters...</span>
             </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_pm25" style="width: 50%"></div></div>
-          </div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>PM10 Sub-Index</span>
-              <span id="subval_pm10">-- AQI</span>
+            <div class="advisory-item">
+              <span class="advisory-item-title">Mask Requirement</span>
+              <span class="advisory-item-text" id="advisoryMask">Advisory pending...</span>
             </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_pm10" style="width: 60%"></div></div>
-          </div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>NO2 Sub-Index</span>
-              <span id="subval_no2">-- AQI</span>
+            <div class="advisory-item">
+              <span class="advisory-item-title">Ventilation / Purifier</span>
+              <span class="advisory-item-text" id="advisoryPurifier">Guidance pending...</span>
             </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_no2" style="width: 30%"></div></div>
-          </div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>SO2 Sub-Index</span>
-              <span id="subval_so2">-- AQI</span>
-            </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_so2" style="width: 15%"></div></div>
-          </div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>CO Sub-Index</span>
-              <span id="subval_co">-- AQI</span>
-            </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_co" style="width: 20%"></div></div>
-          </div>
-
-          <div class="subindex-row">
-            <div class="subindex-info">
-              <span>O3 (Ozone) Sub-Index</span>
-              <span id="subval_o3">-- AQI</span>
-            </div>
-            <div class="subindex-bar-bg"><div class="subindex-bar-fill" id="subbar_o3" style="width: 25%"></div></div>
-          </div>
-        </div>
-
-        <!-- Health & GRAP Advisory Panel -->
-        <div class="health-advisory-card">
-          <div class="card-title">
-            <span>🛡️ CPCB & Delhi NCR GRAP Advisory</span>
-            <span class="status-pill" id="advisoryLevel" style="font-size: 11px; padding: 2px 10px;">Alert</span>
-          </div>
-
-          <div class="health-grid">
-            <div class="health-item">
-              <span class="health-item-title">👥 Public Health Impact</span>
-              <span class="health-item-desc" id="advisoryGeneral">Analyzing conditions...</span>
-            </div>
-            <div class="health-item">
-              <span class="health-item-title">😷 Respirator Mandate</span>
-              <span class="health-item-desc" id="advisoryMask">N95 respirator status.</span>
-            </div>
-            <div class="health-item">
-              <span class="health-item-title">💨 Indoor Air & Purifier</span>
-              <span class="health-item-desc" id="advisoryPurifier">Filtration guidelines.</span>
-            </div>
-            <div class="health-item">
-              <span class="health-item-title">🏃 Outdoor & School Protocol</span>
-              <span class="health-item-desc" id="advisoryOutdoor">Outdoor exertion advice.</span>
+            <div class="advisory-item">
+              <span class="advisory-item-title">Outdoor Exercise</span>
+              <span class="advisory-item-text" id="advisoryOutdoor">Guidance pending...</span>
             </div>
           </div>
         </div>
@@ -388,111 +356,85 @@
 
     </main>
 
-    <!-- SECTION: Counterfactual Policy "What-If" Simulator for Delhi NCR -->
-    <section class="card simulator-section" id="policySimulatorSection">
-      <div class="card-header">
+    <!-- SECTION 3: What-If Policy Simulation (Student Research Component) -->
+    <section class="simulator-panel">
+      <div class="card-header-bar">
         <div>
-          <h2 class="card-title">🌱 Delhi NCR Civic Policy & GRAP Intervention Simulator</h2>
-          <div class="card-subtitle">Quantify the real-time AQI impact of Odd-Even traffic rationing, anti-smog guns, and industrial restrictions</div>
+          <div class="card-heading">Policy Intervention Simulator (Counterfactual Analysis)</div>
+          <div class="card-subtext">Estimating the potential impact of civic measures like Odd-Even traffic restrictions on ambient air quality</div>
         </div>
       </div>
 
-      <div class="sim-grid">
-        <!-- Sliders -->
+      <div class="sim-columns">
         <div>
-          <div class="sim-slider-row">
-            <div class="param-header">
-              <span class="param-name">🚗 Odd-Even & Traffic Emission Curbs</span>
-              <span class="param-unit" id="simTrafficVal">0%</span>
+          <div class="form-group">
+            <div class="form-label">
+              <span>Odd-Even / Traffic Emission Restriction: <strong id="simTrafficVal">0%</strong></span>
             </div>
-            <div class="slider-container">
-              <span class="slider-limit">-50%</span>
-              <input type="range" id="simTrafficSlider" class="styled-slider" min="-50" max="80" step="5" value="0">
-              <span class="slider-limit">+80%</span>
-            </div>
+            <input type="range" id="simTrafficSlider" class="styled-slider" min="-50" max="80" step="5" value="0">
           </div>
 
-          <div class="sim-slider-row">
-            <div class="param-header">
-              <span class="param-name">🏭 Construction Ban & Industrial Scrubber Mandate</span>
-              <span class="param-unit" id="simIndVal">0%</span>
+          <div class="form-group">
+            <div class="form-label">
+              <span>Construction Dust & Industrial Regulation: <strong id="simIndVal">0%</strong></span>
             </div>
-            <div class="slider-container">
-              <span class="slider-limit">-50%</span>
-              <input type="range" id="simIndSlider" class="styled-slider" min="-50" max="80" step="5" value="0">
-              <span class="slider-limit">+80%</span>
-            </div>
+            <input type="range" id="simIndSlider" class="styled-slider" min="-50" max="80" step="5" value="0">
           </div>
 
-          <div class="sim-slider-row">
-            <div class="param-header">
-              <span class="param-name">🍃 Anti-Smog Guns & Artificial Ventilation Boost</span>
-              <span class="param-unit" id="simWindVal">0%</span>
+          <div class="form-group">
+            <div class="form-label">
+              <span>Atmospheric Ventilation / Anti-Smog Gun Boost: <strong id="simWindVal">0%</strong></span>
             </div>
-            <div class="slider-container">
-              <span class="slider-limit">-50%</span>
-              <input type="range" id="simWindSlider" class="styled-slider" min="-50" max="100" step="5" value="0">
-              <span class="slider-limit">+100%</span>
-            </div>
+            <input type="range" id="simWindSlider" class="styled-slider" min="-50" max="100" step="5" value="0">
           </div>
         </div>
 
-        <!-- Live Impact Comparison Box -->
-        <div class="sim-impact-box">
-          <div class="sim-comparison-strip">
+        <div class="sim-output-box">
+          <div class="sim-compare-row">
             <div>
-              <div class="sim-metric-val" id="simBaseVal" style="color: #cbd5e1;">--</div>
-              <div class="sim-metric-label">Current Delhi AQI</div>
+              <div class="sim-val" id="simBaseVal">--</div>
+              <div class="sim-sub">Baseline AQI</div>
             </div>
-            <div class="sim-arrow">➔</div>
+            <div style="font-size: 20px; color: #94a3b8;">➔</div>
             <div>
-              <div class="sim-metric-val" id="simResultVal" style="color: #38bdf8;">--</div>
-              <div class="sim-metric-label">Simulated AQI</div>
+              <div class="sim-val" id="simResultVal" style="color: #2563eb;">--</div>
+              <div class="sim-sub">Simulated AQI</div>
             </div>
           </div>
-          <div class="improvement-badge" id="simDiffBadge">
-            Adjust policy sliders to observe projected improvement in Delhi NCR air quality
+          <div class="sim-result-badge" id="simDiffBadge">
+            Adjust the sliders to simulate the impact of policy interventions
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: Analytics & ML Model Insights -->
-    <section class="card" id="analyticsSection">
-      <div class="card-header">
+    <!-- SECTION 4: Empirical Visualizations & Charts -->
+    <section class="analytics-section">
+      <div class="card-header-bar">
         <div>
-          <h2 class="card-title">📈 ML Model Analytics & Evaluation Benchmarks</h2>
-          <div class="card-subtitle">Empirical performance metrics trained on 7,000 Indian CPCB atmospheric observations</div>
+          <div class="card-heading">Model Evaluation & Telemetry Analytics</div>
+          <div class="card-subtext">Empirical performance results on 7,000 Indian CPCB atmospheric observations</div>
         </div>
       </div>
 
       <div class="charts-grid">
-        <!-- Chart 1: Model Benchmarks -->
-        <div class="card">
-          <div class="card-header" style="border: none; padding-bottom: 0;">
-            <h3 class="card-title" style="font-size: 14px;">🏆 Algorithm Performance Benchmark (R² & MAE)</h3>
-          </div>
-          <div class="chart-wrapper">
+        <div class="chart-card">
+          <div class="chart-title">Model Accuracy Comparison (R² Score & Error)</div>
+          <div class="chart-canvas-wrapper">
             <canvas id="benchmarkChart"></canvas>
           </div>
         </div>
 
-        <!-- Chart 2: Feature Importance -->
-        <div class="card">
-          <div class="card-header" style="border: none; padding-bottom: 0;">
-            <h3 class="card-title" style="font-size: 14px;">🔍 Feature Importance Weight Contribution (%)</h3>
-          </div>
-          <div class="chart-wrapper">
+        <div class="chart-card">
+          <div class="chart-title">Relative Feature Importance (%)</div>
+          <div class="chart-canvas-wrapper">
             <canvas id="featureImportanceChart"></canvas>
           </div>
         </div>
 
-        <!-- Chart 3: 24-Hour Diurnal Cycle -->
-        <div class="card full-width-chart">
-          <div class="card-header" style="border: none; padding-bottom: 0;">
-            <h3 class="card-title" style="font-size: 14px;">⏱️ Delhi CAAQM 24-Hour Diurnal Progression (Inversion Spike vs Solar Ozone)</h3>
-          </div>
-          <div class="chart-wrapper" style="height: 320px;">
+        <div class="chart-card full-chart">
+          <div class="chart-title">24-Hour Diurnal Pollution Trend (Delhi CAAQM Average)</div>
+          <div class="chart-canvas-wrapper" style="height: 280px;">
             <canvas id="diurnalChart"></canvas>
           </div>
         </div>
@@ -501,124 +443,89 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div><strong>AeroAI Engine: Machine Learning Air Quality Prediction System</strong></div>
-      <div>Developed for <span class="footer-highlight">Capstone Project Phase 2 Evaluation</span> | Calibrated with Central Pollution Control Board (CPCB) NAQI Standards</div>
+      <div><strong>B.Tech Capstone Project — Phase-II Progress Demonstration</strong></div>
+      <div>Project Title: Machine Learning Based Air Quality Index (AQI) Prediction System | Central Pollution Control Board (CPCB) Guidelines</div>
     </footer>
 
   </div>
 
-  <!-- PHASE 2 ACADEMIC EVALUATION MODAL -->
+  <!-- PHASE-II PROGRESS REPORT MODAL -->
   <div class="modal-overlay" id="phase2Modal">
-    <div class="modal-box">
+    <div class="modal-dialog">
       <div class="modal-header">
         <div>
-          <h3 class="modal-title">Phase 2 Evaluation Progress Report</h3>
-          <div class="modal-subtitle">Evaluation Window: 08/10/2026 to 12/10/2026 | Demonstration & Evidence Sheet</div>
+          <div class="modal-title">Phase-II Project Evaluation Report</div>
+          <div class="modal-subtitle">Evaluation Window: 08/10/2026 to 12/10/2026 | Demonstration Document</div>
         </div>
-        <button class="modal-close-btn" id="closePhase2ModalBtn">&times;</button>
+        <button class="modal-close" id="closePhase2ModalBtn">&times;</button>
       </div>
 
       <div class="modal-callout">
-        <strong>📌 Implementation Link for Evaluation:</strong> <code>http://localhost:8000</code><br>
-        <strong>API Documentation:</strong> <code>http://localhost:8000/docs</code><br>
-        <strong>Form Link:</strong> <a href="https://docs.google.com/forms/d/e/1FAIpQLScJQ-8sw7889SSnuVRNjNiZe3cKDujelKanh93g6JkFoArdQA/viewform" target="_blank" style="color: #a5b4fc;">Google Form Link for Submission</a>
+        <strong>Implementation Link:</strong> <code>https://babies-quit-rogers-sites.trycloudflare.com</code><br>
+        <strong>Localhost Demo Link:</strong> <code>http://localhost:8000</code><br>
+        <strong>API Documentation:</strong> <code>http://localhost:8000/docs</code>
       </div>
 
-      <div class="modal-section">
-        <h4 class="modal-section-title">1. Project Title & Scope</h4>
-        <p style="font-size: 13px; color: #e2e8f0;">
-          <strong>Title:</strong> AeroAI: Machine Learning-Based Multi-Pollutant Air Quality Index (AQI) Prediction and Atmospheric Risk Modeling for Indian Megacities<br>
-          <strong>Domain:</strong> Machine Learning, Environmental Informatics, Time-Series Regression
-        </p>
-      </div>
+      <div class="modal-section-title">1. Project Summary</div>
+      <p style="font-size: 13px; color: var(--text-body); line-height: 1.6;">
+        This project implements an end-to-end Machine Learning pipeline to predict continuous Air Quality Index (AQI) values under the official Central Pollution Control Board (CPCB) National Air Quality Index (NAQI) standard of India. Special focus has been given to the New Delhi NCR airshed.
+      </p>
 
-      <div class="modal-section">
-        <h4 class="modal-section-title">2. Work Completed in Phase 1 vs Progress in Phase 2</h4>
-        <table class="modal-table">
-          <thead>
-            <tr>
-              <th>Phase 1 (Completed Prior)</th>
-              <th>Phase 2 (Completed for Current Evaluation)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>• Problem formulation & literature review on Indian AQI standards.</td>
-              <td>• CPCB NAQI Multi-city dataset generated & validated (7,000 observations).</td>
-            </tr>
-            <tr>
-              <td>• Selection of 9 input parameters (PM2.5, PM10, NO2, SO2, CO, O3, Temp, Humidity, Wind).</td>
-              <td>• Multi-model training: Gradient Boosting (R²=0.9996), Random Forest (R²=0.9995), Decision Tree (R²=0.9995), Linear Baseline.</td>
-            </tr>
-            <tr>
-              <td>• High-level theoretical architecture design.</td>
-              <td>• Integrated New Delhi CAAQM station registry (Anand Vihar, ITO, RK Puram, Punjabi Bagh, Rohini, Lodhi Road).</td>
-            </tr>
-            <tr>
-              <td>• Baseline requirements gathering.</td>
-              <td>• Real-time interactive UI prototype with animated SVG gauge, dual-sync sliders, and policy simulator.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="modal-section-title">2. Work Completed in Phase 1 vs Progress in Phase 2</div>
+      <table class="academic-table" style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th>Phase-1 (Completed Prior)</th>
+            <th>Phase-2 (Current Review Work)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>• Literature survey of CPCB guidelines & NAAQS standards.</td>
+            <td>• Dataset formulation with 7,000 observations calibrated to CAAQM stations.</td>
+          </tr>
+          <tr>
+            <td>• Selection of 9 input parameters (PM2.5, PM10, NO2, SO2, CO, O3, Temp, Humidity, Wind).</td>
+            <td>• Implemented official CPCB piecewise sub-index mathematical engine.</td>
+          </tr>
+          <tr>
+            <td>• Theoretical system architecture design.</td>
+            <td>• Trained 4 ML models: Gradient Boosting (R²=0.9996), Random Forest (R²=0.9995), Decision Tree, Linear Baseline.</td>
+          </tr>
+          <tr>
+            <td>• Basic wireframing.</td>
+            <td>• Developed functional real-time web portal with Delhi CAAQM station telemetry & policy simulator.</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="modal-section">
-        <h4 class="modal-section-title">3. Model Performance Evaluation Table</h4>
-        <table class="modal-table">
-          <thead>
-            <tr>
-              <th>Algorithm</th>
-              <th>R² Score</th>
-              <th>MAE (AQI Points)</th>
-              <th>RMSE</th>
-              <th>MAPE (%)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Gradient Boosting Regressor</strong></td>
-              <td><strong>0.9996</strong></td>
-              <td>1.78</td>
-              <td>3.51</td>
-              <td>1.50%</td>
-            </tr>
-            <tr>
-              <td><strong>Random Forest Regressor</strong></td>
-              <td><strong>0.9995</strong></td>
-              <td>1.50</td>
-              <td>3.71</td>
-              <td>1.16%</td>
-            </tr>
-            <tr>
-              <td><strong>Decision Tree Regressor</strong></td>
-              <td><strong>0.9995</strong></td>
-              <td>1.76</td>
-              <td>3.80</td>
-              <td>1.45%</td>
-            </tr>
-            <tr>
-              <td>Linear Regression Baseline</td>
-              <td>0.9767</td>
-              <td>18.69</td>
-              <td>25.94</td>
-              <td>12.28%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="modal-section-title">3. Model Performance Summary</div>
+      <table class="academic-table" style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>R² Score</th>
+            <th>MAE (AQI Points)</th>
+            <th>RMSE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Gradient Boosting</strong></td><td><strong>0.9996</strong></td><td>1.78</td><td>3.51</td></tr>
+          <tr><td><strong>Random Forest</strong></td><td><strong>0.9995</strong></td><td>1.50</td><td>3.71</td></tr>
+          <tr><td><strong>Decision Tree</strong></td><td><strong>0.9995</strong></td><td>1.76</td><td>3.80</td></tr>
+          <tr><td>Linear Regression Baseline</td><td>0.9767</td><td>18.69</td><td>25.94</td></tr>
+        </tbody>
+      </table>
 
-      <div class="modal-section">
-        <h4 class="modal-section-title">4. Future Work for Phase 3 (Post Evaluation)</h4>
-        <ul class="modal-list">
-          <li><strong>Hardware Integration:</strong> Interfacing physical particulate sensors (Plantower PMS5003) and electrochemical gas sensors (MQ-135) via ESP32 microcontrollers.</li>
-          <li><strong>Edge ML Deployment:</strong> Model quantization via TensorFlow Lite / ONNX for direct embedded edge inference.</li>
-          <li><strong>Alert Dispatch:</strong> Automated SMS and mobile app push notifications when Delhi NCR crosses GRAP Stage III/IV thresholds.</li>
-        </ul>
-      </div>
+      <div class="modal-section-title">4. Future Scope for Phase-3 (Final Semester)</div>
+      <ul class="modal-list">
+        <li>Hardware interfacing with ESP32 microcontroller and Plantower PMS5003 / MQ-135 sensors.</li>
+        <li>Model edge-quantization (TFLite / ONNX) for low-power microcontroller deployment.</li>
+        <li>Automated alert dispatch via WebSockets / SMS notifications for Delhi GRAP Stage III/IV episodes.</li>
+      </ul>
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 </body>

@@ -1,7 +1,7 @@
 /**
- * Charts and Visualizations Module
- * Handles Chart.js initialization and updates for:
- * 1. Model Performance Benchmark (R2, MAE, RMSE)
+ * Academic Chart.js Visualizations Module
+ * Standard data science plotting style for college project demonstration:
+ * 1. Model Performance Benchmark (R2 & MAE)
  * 2. Feature Importance Analysis
  * 3. 24-Hour Diurnal Pollution & AQI Trends
  */
@@ -10,17 +10,16 @@ let benchmarkChartInstance = null;
 let importanceChartInstance = null;
 let diurnalChartInstance = null;
 
-// Chart.js global dark theme defaults
 if (window.Chart) {
-  Chart.defaults.color = '#94a3b8';
-  Chart.defaults.font.family = "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif";
-  Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.95)';
-  Chart.defaults.plugins.tooltip.titleColor = '#f8fafc';
-  Chart.defaults.plugins.tooltip.bodyColor = '#cbd5e1';
-  Chart.defaults.plugins.tooltip.borderColor = 'rgba(255, 255, 255, 0.1)';
+  Chart.defaults.color = '#475569';
+  Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
+  Chart.defaults.plugins.tooltip.backgroundColor = '#1e293b';
+  Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
+  Chart.defaults.plugins.tooltip.bodyColor = '#f1f5f9';
+  Chart.defaults.plugins.tooltip.borderColor = '#cbd5e1';
   Chart.defaults.plugins.tooltip.borderWidth = 1;
-  Chart.defaults.plugins.tooltip.padding = 10;
-  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+  Chart.defaults.plugins.tooltip.padding = 8;
+  Chart.defaults.plugins.tooltip.cornerRadius = 4;
 }
 
 /**
@@ -57,30 +56,21 @@ function renderBenchmarkChart(metricsData) {
       labels: modelLabels,
       datasets: [
         {
-          label: 'R² Score (Accuracy)',
+          label: 'Test R² Score',
           data: r2Scores,
-          backgroundColor: 'rgba(99, 102, 241, 0.8)',
-          borderColor: '#6366f1',
-          borderWidth: 1.5,
-          borderRadius: 6,
+          backgroundColor: '#1e40af',
+          borderColor: '#172554',
+          borderWidth: 1,
+          borderRadius: 3,
           yAxisID: 'yR2'
         },
         {
-          label: 'MAE (Mean Abs Error)',
+          label: 'Mean Absolute Error (MAE)',
           data: maeScores,
-          backgroundColor: 'rgba(6, 182, 212, 0.7)',
-          borderColor: '#06b6d4',
-          borderWidth: 1.5,
-          borderRadius: 6,
-          yAxisID: 'yError'
-        },
-        {
-          label: 'RMSE (Root Mean Sq Error)',
-          data: rmseScores,
-          backgroundColor: 'rgba(244, 63, 94, 0.7)',
-          borderColor: '#f43f5e',
-          borderWidth: 1.5,
-          borderRadius: 6,
+          backgroundColor: '#e11d48',
+          borderColor: '#9f1239',
+          borderWidth: 1,
+          borderRadius: 3,
           yAxisID: 'yError'
         }
       ]
@@ -91,28 +81,31 @@ function renderBenchmarkChart(metricsData) {
       plugins: {
         legend: {
           position: 'top',
-          labels: { boxWidth: 12, padding: 16 }
+          labels: { boxWidth: 12, padding: 12, font: { size: 11, weight: '600' } }
         }
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
+          grid: { color: '#f1f5f9' },
+          ticks: { font: { size: 11 } }
         },
         yR2: {
           type: 'linear',
           position: 'left',
           min: 0.90,
           max: 1.0,
-          title: { display: true, text: 'R² Score (Higher is better)', color: '#6366f1' },
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
+          title: { display: true, text: 'R² Score (Higher is better)', color: '#1e40af', font: { size: 11, weight: '700' } },
+          grid: { color: '#e2e8f0' },
+          ticks: { font: { size: 10 } }
         },
         yError: {
           type: 'linear',
           position: 'right',
           min: 0,
           max: 30,
-          title: { display: true, text: 'Error in AQI Points (Lower is better)', color: '#f43f5e' },
-          grid: { drawOnChartArea: false }
+          title: { display: true, text: 'MAE in AQI Points (Lower is better)', color: '#e11d48', font: { size: 11, weight: '700' } },
+          grid: { drawOnChartArea: false },
+          ticks: { font: { size: 10 } }
         }
       }
     }
@@ -127,27 +120,19 @@ function renderFeatureImportanceChart(importanceData) {
   if (!ctx || !window.Chart) return;
 
   const featureLabels = {
-    'pm10': 'PM10 (Coarse Dust)',
-    'pm25': 'PM2.5 (Fine Particulates)',
-    'o3': 'O3 (Ground Ozone)',
+    'pm10': 'PM10 (Coarse Dust & Stubble Ash)',
+    'pm25': 'PM2.5 (Fine Respirable Particulates)',
+    'o3': 'O3 (Photochemical Ozone)',
     'co': 'CO (Carbon Monoxide)',
-    'no2': 'NO2 (Traffic Emissions)',
+    'no2': 'NO2 (Vehicular Nitrogen Oxide)',
     'so2': 'SO2 (Industrial Sulfur)',
     'wind_speed': 'Wind Speed (Dispersion)',
     'temperature': 'Temperature (°C)',
-    'humidity': 'Humidity (%)'
+    'humidity': 'Relative Humidity (%)'
   };
 
   const labels = importanceData.map(d => featureLabels[d.feature] || d.feature.toUpperCase());
   const values = importanceData.map(d => d.importance);
-
-  // Gradient colors
-  const backgroundColors = values.map((val, idx) => {
-    if (idx === 0) return 'rgba(99, 102, 241, 0.85)';
-    if (idx === 1) return 'rgba(6, 182, 212, 0.85)';
-    if (idx === 2) return 'rgba(16, 185, 129, 0.85)';
-    return 'rgba(148, 163, 184, 0.45)';
-  });
 
   if (importanceChartInstance) {
     importanceChartInstance.destroy();
@@ -158,12 +143,12 @@ function renderFeatureImportanceChart(importanceData) {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Relative Importance (%)',
+        label: 'Feature Weight (%)',
         data: values,
-        backgroundColor: backgroundColors,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        backgroundColor: '#0284c7',
+        borderColor: '#0369a1',
         borderWidth: 1,
-        borderRadius: 6
+        borderRadius: 3
       }]
     },
     options: {
@@ -177,11 +162,13 @@ function renderFeatureImportanceChart(importanceData) {
         x: {
           min: 0,
           max: 100,
-          title: { display: true, text: 'Feature Weight (%)' },
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
+          title: { display: true, text: 'Relative Importance Weight (%)', font: { size: 11, weight: '700' } },
+          grid: { color: '#e2e8f0' },
+          ticks: { font: { size: 10 } }
         },
         y: {
-          grid: { display: false }
+          grid: { display: false },
+          ticks: { font: { size: 10 } }
         }
       }
     }
@@ -205,40 +192,39 @@ function renderDiurnalChart(historicalData) {
       labels: historicalData.labels,
       datasets: [
         {
-          label: 'Overall AQI',
+          label: 'Overall NAQI',
           data: historicalData.aqi,
-          borderColor: '#f59e0b',
-          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+          borderColor: '#ea580c',
+          backgroundColor: 'rgba(234, 88, 12, 0.08)',
           fill: true,
-          tension: 0.35,
-          borderWidth: 2.5,
-          pointRadius: 3,
-          pointHoverRadius: 6
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 2.5
         },
         {
           label: 'PM2.5 (µg/m³)',
           data: historicalData.pm25,
-          borderColor: '#f43f5e',
-          tension: 0.35,
-          borderWidth: 1.8,
-          borderDash: [5, 5],
-          pointRadius: 2
+          borderColor: '#dc2626',
+          tension: 0.3,
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          pointRadius: 1.5
         },
         {
           label: 'PM10 (µg/m³)',
           data: historicalData.pm10,
-          borderColor: '#8b5cf6',
-          tension: 0.35,
-          borderWidth: 1.8,
-          pointRadius: 2
+          borderColor: '#7c3aed',
+          tension: 0.3,
+          borderWidth: 1.5,
+          pointRadius: 1.5
         },
         {
-          label: 'Ozone O3 (ppb)',
+          label: 'Ozone O3 (µg/m³)',
           data: historicalData.o3,
-          borderColor: '#06b6d4',
-          tension: 0.35,
-          borderWidth: 1.8,
-          pointRadius: 2
+          borderColor: '#0284c7',
+          tension: 0.3,
+          borderWidth: 1.5,
+          pointRadius: 1.5
         }
       ]
     },
@@ -252,17 +238,19 @@ function renderDiurnalChart(historicalData) {
       plugins: {
         legend: {
           position: 'top',
-          labels: { boxWidth: 12, padding: 14 }
+          labels: { boxWidth: 12, padding: 12, font: { size: 11, weight: '600' } }
         }
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
+          grid: { color: '#f1f5f9' },
+          ticks: { font: { size: 10 } }
         },
         y: {
           min: 0,
-          title: { display: true, text: 'Concentration / Index Points' },
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
+          title: { display: true, text: 'Concentration (µg/m³) / NAQI Points', font: { size: 11, weight: '700' } },
+          grid: { color: '#e2e8f0' },
+          ticks: { font: { size: 10 } }
         }
       }
     }
